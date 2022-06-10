@@ -1,0 +1,37 @@
+# local.dec is a part of the PYTHIA event generator.
+# Copyright (C) 2022 Torbjorn Sjostrand.
+# PYTHIA is licenced under the GNU GPL v2 or later, see COPYING for details.
+# Please respect the MCnet Guidelines, see GUIDELINES for details.
+
+# An example EvtGen decay file to be used with local.cc.
+
+# Define the aliased particles and their charge conjugates.
+
+# Modify the decay of the B0.
+Alias local_Ds*- D_s*-
+Alias local_Ds*+ D_s*+
+Alias local_Ds- D_s-
+Alias local_Ds+ D_s+
+ChargeConj local_Ds*- local_Ds*+
+ChargeConj local_Ds-  local_Ds+
+
+# Modify the decay of the B0.
+Decay B_s0
+      1.0  local_Ds*- mu+ nu_mu HQET 0.77 1.33 0.92;
+Enddecay
+CDecay anti-B_s0
+
+# Modify the decay of the D*- (for the B0).
+Decay local_Ds*-
+      1.0  local_Ds- gamma VSP_PWAVE;
+Enddecay
+CDecay local_Ds*+
+
+# Modify the decay of the D- (for the B0).
+Decay local_Ds-
+    1.0  mu-     anti-nu_mu                              PHOTOS    SLN; #[Reconstructed PDG2011]
+Enddecay
+CDecay local_Ds+
+
+End
+
