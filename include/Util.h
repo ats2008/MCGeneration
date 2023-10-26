@@ -1,5 +1,10 @@
+#include "TROOT.h"
+#include "TString.h"
+
 #define PI 3.14159
 #define TWO_PI 6.28318
+
+using namespace std;
 
 void getStringFromTag(string tag,std::istringstream &strStream, string inputStr  , string &var)
 {

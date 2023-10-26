@@ -1,0 +1,15 @@
+{
+    "PARAMETERS" : {
+            "MG5_EXE" : "/grid_mnt/t3storage3/athachay/trippleHiggs/delphisStudies/MG5_aMC_v2_6_5/bin/mg5_aMC"
+    },
+    "vHH" : {
+            "proc_card" : "/grid_mnt/t3storage3/athachay/trippleHiggs/delphisStudies/MCGeneration/configs/proc_cards/vHH.dat",
+            "launch_card" : "/grid_mnt/t3storage3/athachay/trippleHiggs/delphisStudies/MCGeneration/configs/madgraphLaunchCard.tpl.dat",
+            "decayFile" : "/grid_mnt/t3storage3/athachay/trippleHiggs/delphisStudies/MCGeneration/data/vvHTo2G_lheDecay.config",
+            "script" : "/grid_mnt/t3storage3/athachay/trippleHiggs/delphisStudies/MCGeneration/misc/templates/runDelphesChain.tpl.sh",
+            "delphesCard" : "/grid_mnt/t3storage3/athachay/trippleHiggs/delphisStudies/MCGeneration/data/delphes_card_CMS.tcl",
+            "maxevents" : 2000,
+            "njobs" : 100
+          }
+    
+}

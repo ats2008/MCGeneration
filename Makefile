@@ -1,17 +1,24 @@
 CXX 		 =g++
-LCC_RELEASE  =LCG_101_ATLAS_13
+LCC_RELEASE  =LCG_104
 PLATFORM     =x86_64-centos7-gcc11-opt
 
 
 ROOT_LIBS	 =`root-config --libs` 
 PYTHIA_LIBS  =`pythia8-config --cxxflags --ldflags --libs`
-LIBS_EXTRA   = -L/cvmfs/sft.cern.ch/lcg/views/$(LCC_RELEASE)/$(PLATFORM)/lib -L/cvmfs/sft.cern.ch/lcg/views/$(LCC_RELEASE)/$(PLATFORM)/lib64 -L/cvmfs/sft.cern.ch/lcg/releases/gcc/11.1.0-e80bf/x86_64-centos7/lib64 -lEvtGen -lEvtGenExternal -lgfortran -lPhotospp -lHepMC 
+LIBS_EXTRA_BASE     = -L/cvmfs/sft.cern.ch/lcg/views/$(LCC_RELEASE)/$(PLATFORM)/lib  -L/cvmfs/sft.cern.ch/lcg/views/$(LCC_RELEASE)/$(PLATFORM)/lib64  
+LIBS_EXTRA_EVTGEN   = -lEvtGen -lEvtGenExternal  -lgfortran -lPhotospp 
+LIBS_EXTRA_HEPMC    =  -lHepMC3 
 
-CXXFLAGS 	=-g3 -std=c++17  $(ROOT_LIBS) $(PYTHIA_LIBS) $(LIBS_EXTRA)
+LIBS_EXTRA = ${LIBS_EXTRA_BASE} ${LIBS_EXTRA_EVTGEN} ${LIBS_EXTRA_HEPMC}
+
+CXXFLAGS 	=-g3 -std=c++17  $(ROOT_LIBS) $(PYTHIA_LIBS) $(LIBS_EXTRA_BASE) 
 INCPATH     = include -I/cvmfs/sft.cern.ch/lcg/views/$(LCC_RELEASE)/$(PLATFORM)/include
 
 TARGET		= evtGenExample pythiaExample
 all:	$(TARGET) 
+
+showerLHE : src/showerLHE.cc  
+	$(CXX) $(CXXFLAGS) -I$(INCPATH) -o $@.exe $<  $(LIBS) ${LIBS_EXTRA_HEPMC}
 
 evtGenExample : src/example1.cc  
 	$(CXX) $(CXXFLAGS) -I$(INCPATH) -o $@.exe $<  $(LIBS)
