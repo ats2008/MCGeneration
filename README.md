@@ -32,5 +32,5 @@ source /cvmfs/sft.cern.ch/lcg/views/setupViews.sh LCG_101_ATLAS_13  x86_64-cento
 
 ## Dephes Helpers
  * `python/makeFileList.py` , for making the josn file with the filenames.
- * `python/concatinateFiles.py` , for concatinating paraquet files containing generic awkward arrays
-
+ * `python/concatinateFiles.py` , for concatinating paraquet files containing generic awkward arrays.
+ * `python/preselectAndExport_delphis.py` , for event preselection and **GEN Matching of the quarks to jets**
