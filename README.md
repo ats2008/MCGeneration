@@ -27,6 +27,9 @@ source /cvmfs/sft.cern.ch/lcg/views/setupViews.sh LCG_101_ATLAS_13  x86_64-cento
   - Generate Condor jobs for event generation
   ```
   python3 makeMagraphEvents.py  -h
-  python3 makeMagraphEvents.py  -v v0 -n 100 -e 4000 -s
+  python3 makeMagraphEvents.py  -v v0 -n 100 -e 4000 --offset 200 -s
   ```
+
+## Dephes Helpers
+ * `python/makeFileList.py` , for making the josn file with the filenames.
 
