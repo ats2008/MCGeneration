@@ -25,7 +25,7 @@ set +x
 source /cvmfs/sft.cern.ch/lcg/views/setupViews.sh LCG_104  x86_64-centos7-gcc11-opt
 set -x 
 
-cp @@PTAG/Events/run_@@IDX/events.lhe.gz .
+cp @@PTAG/Events/run_@@IDX/*events.lhe.gz events.lhe.gz
 gunzip events.lhe.gz 
 /grid_mnt/t3storage3/athachay/trippleHiggs/delphisStudies/MCGeneration/showerLHE.exe /grid_mnt/t3storage3/athachay/trippleHiggs/delphisStudies/MCGeneration/configs/lhe.cfg @@DECAY_FILE events.lhe events.hepmc3
 /grid_mnt/t3storage3/athachay/trippleHiggs/delphisStudies/Delphes-3.5.0/DelphesHepMC3  @@DEPHISCARD events.root events.hepmc3
@@ -43,3 +43,6 @@ else
     mv @@RUNSCRIPT.busy @@RUNSCRIPT 
     echo FAIL AT EXE
 fi
+cd @@DIRNAME
+echo Cleaning up the director $TMPDIR
+rm -rf $TMPDIR
