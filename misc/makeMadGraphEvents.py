@@ -19,7 +19,7 @@ NEVENTS_PER_JOB = 1000
 ZERO_OFFSET=1
 FILES_PER_JOB=1
 maxMeterialize=100
-offsetStep=10000
+offsetStep=0
 RESULT_BASE='/grid_mnt/t3storage3/athachay/trippleHiggs/delphisStudies/MCGeneration/results'
 JOB_TYPE='mg5Generation'
 
@@ -30,6 +30,8 @@ parser.add_argument('-t',"--test", help="Test Job", action='store_true' )
 parser.add_argument('-n',"--njobs", help="Number of jobs to make",default=-6000,type=int)
 parser.add_argument('-e',"--nevts", help="Number of events per job",default=-1,type=int)
 parser.add_argument('-c',"--config", help="Configuration file")
+parser.add_argument(     "--cats", help="JobTags to process",default='')
+parser.add_argument(     "--offset", help="offset to the jobs / random seeds  ",default=1, type=int)
 parser.add_argument('-v',"--version", help="Vesion of the specific work",default='TEST')
 
 args = parser.parse_args()
@@ -43,19 +45,15 @@ jobsToProcess=None
 submit2Condor=args.submit
 resubmit2Condor=args.resubmit
 isTest=args.test
-onlyPrint=args.printOnly
-cats=args.cats
-years=args.years.split(",")
 job_hash=f'mg5Gen_{args.version}'
+ZERO_OFFSET=args.offset
 
 print(" submit jobs ",submit2Condor)
 print(" resubmit jobs ",resubmit2Condor)
 print(" isTest ",isTest)
-print(" printOnly ",onlyPrint)
 print(" njobs ",njobs)
 print(" maxEvt ",maxevents)
-print(" cats ",cats)
-print(" years ",years)
+print(" rand seed offset  ",ZERO_OFFSET)
 
 if submit2Condor or resubmit2Condor:
     choice=input("Do you really want to submit the jobs to condor pool ? ")
@@ -64,7 +62,7 @@ if submit2Condor or resubmit2Condor:
         exit(0)
 
 jobDict={}
-jobConfigJson= args.cfg
+jobConfigJson= args.config
 with open(jobConfigJson) as f:
     print("Loading Job Config ",jobConfigJson)
     jobDict=json.load(f)
@@ -79,8 +77,8 @@ if isTest :
 allCondorSubFiles=[]
 if jobsToProcess==None:
     jobsToProcess=list( jobDict.keys() )
-if cats:
-    jobsToProcess=cats.split(",")
+if args.cats:
+    jobsToProcess=args.cats.split(",")
 
 print()
 print(" Processing Job categories : ",jobsToProcess)
@@ -89,7 +87,9 @@ i=0
 
 for jobTag in jobsToProcess:
     jobTag=jobTag
-    
+    if jobTag not in jobsToProcess:
+        print(f"Skipping {jobTag}")
+
     runScriptTemplate = jobDict[jobTag]['script'] 
     runScriptTxt=[]
     with open(runScriptTemplate,'r') as f:
@@ -103,7 +103,7 @@ for jobTag in jobsToProcess:
     proc_tag="tproc"
     for l in proc_card:
         if 'output' in l:
-            proc_tag=l.split(" ")[-1].strip()
+            proc_tag=l.strip().split(" ")[-1].strip()
     print(f"proc tag set to {proc_tag}")
             
     proc_card=''.join(proc_card)
@@ -127,9 +127,9 @@ for jobTag in jobsToProcess:
     print(f"Making {njobs_toMake} Jobs with {maxevents} each , for {job_hash}/{jobTag}")
     njobs_made=0
     for ii in range(njobs_toMake):
-        i = ii +ZERO_OFFSET
         if(ii%10==0) : print("\nJob Made : ",end = " " )
         print(ii,end =" ")
+        i = ii +ZERO_OFFSET
 
         njobs_made+=1
         dirName =f'{head}/Job_{i}/'
@@ -188,8 +188,6 @@ for jobTag in jobsToProcess:
 
     if resubmit2Condor:
         continue
-    if isTest:
-        break
 print("")
 print("")
 print("All condor submit files to be submitted ")
