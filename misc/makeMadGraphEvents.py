@@ -9,8 +9,8 @@ executable = $(filename)\n\
 output = $Fp(filename)run.$(Cluster).stdout\n\
 error = $Fp(filename)run.$(Cluster).stderr\n\
 log = $Fp(filename)run.$(Cluster).log\n\
-+JobFlavour = \"longlunch\"\n\
 "
+#max_materialize = 50\n\
 pwd=os.environ['PWD']
 proxy_path=os.environ['X509_USER_PROXY']
 HOME=os.environ['HOME']
@@ -113,7 +113,10 @@ for jobTag in jobsToProcess:
     with open(launch_card_pth,'r') as f:
         launch_card=f.readlines()
     launch_card=''.join(launch_card)
-    
+    gridpack=''
+    if 'gridpack' in jobDict[jobTag]:
+        gridpack=jobDict[jobTag]['gridpack']
+        print(" --> gridpack set to  : ",gridpack)
     #if proc not in procToProcess:
     #    continue
     head=pwd+f'/Condor/{JOB_TYPE}/{job_hash}/{jobTag}/'
@@ -160,6 +163,7 @@ for jobTag in jobsToProcess:
         tmp=tmp.replace("@@IDX",str(i))
         tmp=tmp.replace("@@PTAG",proc_tag)
         tmp=tmp.replace("@@MAXEVENTS"  ,str(maxevents))
+        tmp=tmp.replace("@@GRIDPACK"  ,str(gridpack))
         tmp=tmp.replace("@@PROCFILENAME"  ,procFileName)
         tmp=tmp.replace("@@LAUNCHFILENAME",launchFileName)
         tmp=tmp.replace("@@RUNSCRIPT",runScriptName)
@@ -181,6 +185,8 @@ for jobTag in jobsToProcess:
     with open(condorScriptName,'w') as condorScript:
         condorScript.write(condorScriptString)
         condorScript.write("queue filename matching ("+head+"/*/*.sh)\n")
+        #if max_meterialize > 0:
+        #    condorScript.write(f"max_materialize = {max_meterialize}\n")
         rpth=os.path.relpath(condorScriptName)
         rFolder ='/'.join(rpth.split("/")[:-1])
         print(f"Condor {njobs_made} Jobs made !\n\t Job Directory : {rFolder}/ \n\t submit file  : {rpth}")

@@ -121,7 +121,7 @@ int main(int argc, char* argv[]) {
 
   // The event loop.
   Hist mass("m(e, pi0) [GeV]", 100, 0., 2.);
-   Float_t dTemp;
+  Float_t dTemp;
   auto t_start = std::chrono::high_resolution_clock::now();
   auto t_end = std::chrono::high_resolution_clock::now();
   for (int iEvent = 0; iEvent < maxEvents; ++iEvent) {

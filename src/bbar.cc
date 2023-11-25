@@ -58,10 +58,10 @@ int main(int argc, char* argv[]) {
        {
            getIntFromTag("ReportEvery"        ,strStream , field , reportEvery);
            getIntFromTag("MaxEvents"          ,strStream , field , maxEvents);
-           getStringFromTag("PythiaCfgFile"        ,strStream , field , PythiaCfgFile);
-           getStringFromTag("Pythia8Data"        ,strStream , field , Pythia8Data);
-           getStringFromTag("ChannelDesc"        ,strStream , field ,ChannelDesc);
-           getStringFromTag("OutputFname"        ,strStream , field ,outputFname);
+           getStringFromTag("PythiaCfgFile"   ,strStream , field , PythiaCfgFile);
+           getStringFromTag("Pythia8Data"     ,strStream , field , Pythia8Data);
+           getStringFromTag("ChannelDesc"     ,strStream , field , ChannelDesc);
+           getStringFromTag("OutputFname"     ,strStream , field , outputFname);
        }
     }
     cfgFile.close();
@@ -118,7 +118,6 @@ int main(int argc, char* argv[]) {
       
       if (iPrt > 7) break;
       std::cout<<"\t i = "<<iPrt<<" | "<<event[iPrt].id()<<" | "<<" parents : "<<event[iPrt].mother1()<<" , "<<event[iPrt].mother2()<<" | daughters : "<<event[iPrt].daughter1()<<" , "<<event[iPrt].daughter2()<<" pT : "<<event[iPrt].pT()<<"\n";
-       
     
     }
     std::cout<<"\t g1 : "<<event[3].id()<<" pT : "<<event[3].pT()<<"\n";

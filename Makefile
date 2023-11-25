@@ -20,6 +20,9 @@ all:	$(TARGET)
 showerLHE : src/showerLHE.cc  
 	$(CXX) $(CXXFLAGS) -I$(INCPATH) -o $@.exe $<  $(LIBS) ${LIBS_EXTRA_HEPMC}
 
+showerLHE_lepVeto : src/showerLHE_lepVeto.cc
+	$(CXX) $(CXXFLAGS) -I$(INCPATH) -o $@.exe $<  $(LIBS) ${LIBS_EXTRA_HEPMC}
+
 evtGenExample : src/example1.cc  
 	$(CXX) $(CXXFLAGS) -I$(INCPATH) -o $@.exe $<  $(LIBS)
 
